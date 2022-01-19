@@ -16,7 +16,7 @@ class Directory extends Component {
       {
         this.state.sections.map(section =>
           <MenuItem
-            {... section.size}
+            {... section}
             subtitle="SHOP NOW"
           />
         )
