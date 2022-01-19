@@ -4,16 +4,10 @@ import {
   Route,
   Routes,
   Outlet,
-  useParams,
 } from 'react-router-dom';
 import './App.css';
-import HomePage from './pages/home-page/home-page';
-
-const Shop = () => {
-  const params = useParams();
-  return <h1>{ params.topic }</h1>
-}
-
+import HomePage from './pages/home/home';
+import ShopPage from './pages/shop/shop';
 
 function App() {
   return (
@@ -21,7 +15,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Outlet/>}>
           <Route path="" element={<HomePage />}/>
-          <Route path="shop/:topic" element={<Shop />}/>
+          <Route path="shop" element={<ShopPage />}/>
+          <Route path="shop/:topic" element={<ShopPage />}/>
           <Route path="*" element={<HomePage />}/>
         </Route>
       </Routes>

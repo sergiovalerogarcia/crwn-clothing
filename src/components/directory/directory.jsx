@@ -16,11 +16,7 @@ class Directory extends Component {
       {
         this.state.sections.map(section =>
           <MenuItem
-            key={section.id}
-            title={section.title}
-            imageUrl={section.imageUrl}
-            linkUrl={section.linkUrl}
-            size={section.size}
+            {... section.size}
             subtitle="SHOP NOW"
           />
         )
