@@ -1,7 +1,7 @@
 import { getRedirectResult } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, signInWithGoogle } from "../../firebase/firebase";
+import { auth, createUserProfileDocument, signInWithGoogle } from "../../firebase/firebase";
 import CustomButton from "../custom-button/custom-button";
 import FormInput from "../form-input/form-input";
 import "./sign-in.scss";
@@ -13,11 +13,13 @@ const SignIn = ({ setUser }) => {
   });
 
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    getRedirectResult(auth).then((result) => {
-      setUser(result.user);
-      navigate('/')
+
+  useEffect( () => {
+    getRedirectResult(auth).then(({ user }) => {
+      createUserProfileDocument(user);
+      setUser(user);
+      navigate('/');
+      
     }).catch((error) => {
     });
   });

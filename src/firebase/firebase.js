@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,11 +23,29 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const provider = new GoogleAuthProvider();
 export const auth = getAuth(app);
-export const db = getFirestore();
+const db = getFirestore();
+
 export const analytics = getAnalytics(app);
 export const signInWithGoogle = () => signInWithRedirect(auth, provider);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (userAuth) {
+    const docRef = doc(db, "users", userAuth.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      try {
+        const createdAt = new Date();
+        await setDoc(docRef, {
+          email: userAuth.email,
+          displayName: userAuth.displayName,
+          createdAt,
+          ...additionalData
+        });
+      } catch (e) {
+        throw e;
+      }
+    }
+    return docRef;
   }
 }
