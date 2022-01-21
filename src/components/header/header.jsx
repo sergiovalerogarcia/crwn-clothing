@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 import "./header.scss";
 import { ReactComponent as Logo} from '../../assets/crown.svg'
 import { auth } from "../../firebase/firebase";
-import { getRedirectResult, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { connect } from "react-redux";
+import { setCurrentUser } from "../../redux/user/user.actions";
 
 
 
 class Header extends Component {
 
   signOutGoogle = () => {
-    this.props.setUser(null);
+    this.props.setCurrentUser(null);
     signOut(auth);
   }
 
@@ -44,4 +46,12 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => ({
+  currentUser: state.user.currentUser
+})
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

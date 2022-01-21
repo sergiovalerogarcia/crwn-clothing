@@ -2,9 +2,9 @@ import React from "react";
 import SignIn from "../../components/sign-in/sign-in";
 import "./sing-in-up.scss";
 
-const SingInUp = ({setUser}) => (
+const SingInUp = () => (
   <div className='sing-in-up'>
-    <SignIn setUser={setUser}/>
+    <SignIn />
   </div>
 )
 

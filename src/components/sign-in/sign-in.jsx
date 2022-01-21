@@ -1,12 +1,14 @@
 import { getRedirectResult } from "firebase/auth";
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { auth, createUserProfileDocument, signInWithGoogle } from "../../firebase/firebase";
+import { setCurrentUser } from "../../redux/user/user.actions";
 import CustomButton from "../custom-button/custom-button";
 import FormInput from "../form-input/form-input";
 import "./sign-in.scss";
 
-const SignIn = ({ setUser }) => {
+const SignIn = ({ setCurrentUser }) => {
   const [state, setState] = useState({
     email: '',
     password: '',
@@ -17,9 +19,8 @@ const SignIn = ({ setUser }) => {
   useEffect( () => {
     getRedirectResult(auth).then(({ user }) => {
       createUserProfileDocument(user);
-      setUser(user);
+      setCurrentUser(user);
       navigate('/');
-      
     }).catch((error) => {
     });
   });
@@ -65,5 +66,8 @@ const SignIn = ({ setUser }) => {
   </div>
 }
 
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
 
-export default SignIn;
+export default connect(null, mapDispatchToProps)(SignIn);
